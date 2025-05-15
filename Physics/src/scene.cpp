@@ -5,12 +5,12 @@ Scene::Scene(const std::string& title, int width, int height, const Color& backg
 	m_height{ height },
 	m_background{ background }
 {
-	// InitWindow(width, height, title.c_str()); // REMOVE THIS LINE
+
 }
 
 Scene::~Scene()
 {
-	// CloseWindow(); // REMOVE THIS LINE
+
 }
 
 void Scene::BeginDraw()

@@ -11,7 +11,7 @@ int main()
 
     InitWindow(screenWidth, screenHeight, "Polar Curves Demo");
 
-    PolarScene polarScene(screenWidth, screenHeight); // Pass screen dimensions here
+    PolarScene polarScene(screenWidth, screenHeight);
 
     polarScene.Initialize();
 

@@ -7,7 +7,7 @@
 class PolarScene : public Scene
 {
 public:
-    PolarScene(int screenWidth, int screenHeight); // Modified constructor
+    PolarScene(int screenWidth, int screenHeight);
     ~PolarScene() override = default;
 
     void Initialize() override;
@@ -32,7 +32,6 @@ private:
     float user_b;
     float user_c;
 
-    // Function to convert Polar to screen coordinates
     Vector2 PolarToScreen(const Polar& polar);
 
     std::vector<Vector2> GenerateArchimedeanSpiral(float minTheta, float maxTheta, float step);
