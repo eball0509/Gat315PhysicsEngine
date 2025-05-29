@@ -132,6 +132,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Body.h" />
+    <ClInclude Include="src\Collision.h" />
+    <ClInclude Include="src\Contact.h" />
     <ClInclude Include="src\Gravitation.h" />
     <ClInclude Include="src\GUI.h" />
     <ClInclude Include="src\Integrator.h" />
@@ -149,6 +151,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Body.cpp" />
+    <ClCompile Include="src\Collision.cpp" />
     <ClCompile Include="src\Gravitation.cpp" />
     <ClCompile Include="src\GUI.cpp" />
     <ClCompile Include="src\main.cpp" />

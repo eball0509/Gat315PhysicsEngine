@@ -3,11 +3,13 @@
 #include "Spring.h"
 #include <vector>
 #include "../../build/external/raylib-master/src/raylib.h"
+#include "Contact.h"
 
 class Scene;
 
 using bodies_t = std::vector<Body*>;
 using springs_t = std::vector<Spring*>;
+using contacts_t = std::vector<Contact>;
 
 class World
 {
@@ -33,8 +35,10 @@ public:
 
 	bodies_t& GetBodies() { return m_bodies; }
 
+
 private:
 	Vector2 m_gravity;
 	bodies_t m_bodies;
 	springs_t m_springs;
+	contacts_t m_contacts;
 };
