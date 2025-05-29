@@ -1,33 +1,43 @@
-// main.cpp
-#include "trigonometry_scene.h"
 #include "../../build/external/raylib-master/src/raylib.h"
-#include "../../Include/resource_dir.h"
+#include "trigonometry_scene.h"
+#include "VectorScene.h"
+#include "SpringScene.h"
 #include "PolarScene.h"
+#include "../../include/resource_dir.h"
 
 int main()
 {
-    const int screenWidth = 800;
-    const int screenHeight = 600;
+	SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
 
-    InitWindow(screenWidth, screenHeight, "Polar Curves Demo");
+	InitWindow(1280, 720, "Hello Raylib");
 
-    PolarScene polarScene(screenWidth, screenHeight);
+	SearchAndSetResourceDir("resources");
 
-    polarScene.Initialize();
+	Texture wabbit = LoadTexture("wabbit_alpha.png");
 
-    SetTargetFPS(60);
+	Scene* scene = new SpringScene("Scene", 1280, 720);
 
-    while (!WindowShouldClose())
-    {
-        polarScene.Update();
+	scene->Initialize();
 
-        polarScene.BeginDraw();
-        polarScene.Draw();
-        polarScene.DrawGUI();
-        polarScene.EndDraw();
-    }
+	float timeAccumlator = 0.0f;
+	while (!WindowShouldClose())		
+	{
+		scene->Update();
+		timeAccumlator += std::min(GetFrameTime(), 0.5f);
 
-    CloseWindow();
+		while (timeAccumlator >= Scene::fixedTimeStep)
+		{
+			scene->FixedUpdate();
+			timeAccumlator -= Scene::fixedTimeStep;
+		}
+		scene->FixedUpdate();
+		scene->BeginDraw();
+		scene->Draw();
+		scene->DrawGUI();
+		scene->EndDraw();
+	}
 
-    return 0;
+	UnloadTexture(wabbit);
+	CloseWindow();
+	return 0;
 }
