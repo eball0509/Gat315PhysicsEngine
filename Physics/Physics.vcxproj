@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\AABB.h" />
     <ClInclude Include="src\Body.h" />
     <ClInclude Include="src\Collision.h" />
     <ClInclude Include="src\Contact.h" />

@@ -52,7 +52,7 @@ void SeparateContacts(contacts_t& contacts)
 {
 	for (auto& contact : contacts)
 	{
-		float totalInverseMass = contact.bodyA->inverseMass + contact.bodyB->inverseMass;
+		float totalInverseMass = contact.bodyA->invMass + contact.bodyB->invMass;
 
 		if (totalInverseMass == 0 || contact.depth == 0)
 		{
@@ -61,7 +61,41 @@ void SeparateContacts(contacts_t& contacts)
 
 		Vector2 separation = Vector2Scale(contact.normal, contact.depth / totalInverseMass);
 
-		contact.bodyA->position = Vector2Add(contact.bodyA->position, Vector2Scale(separation, contact.bodyA->inverseMass));
-		contact.bodyB->position = Vector2Subtract(contact.bodyB->position, Vector2Scale(separation, contact.bodyB->inverseMass));
+		contact.bodyA->position = Vector2Add(contact.bodyA->position, Vector2Scale(separation, contact.bodyA->invMass));
+		contact.bodyB->position = Vector2Subtract(contact.bodyB->position, Vector2Scale(separation, contact.bodyB->invMass));
+	}
+}
+
+void ResolveContacts(contacts_t& contacts)
+{
+	for (auto& contact : contacts)
+	{
+		// Compute relative velocity: velocity of bodyA relative to bodyB
+		Vector2 rv = Vector2Subtract(contact.bodyA->velocity, contact.bodyB->velocity);
+
+		// Project relative velocity onto the contact normal (nv is the normal velocity)
+		float nv = Vector2DotProduct(rv, contact.normal);
+
+		// Skip if bodies are already separating or not moving towards each other along the normal
+		if (nv > 0) continue;
+
+		// Compute impulse magnitude
+		// totalInverseMass is the sum of inverse masses, used to distribute impulse
+		float totalInverseMass = contact.bodyA->invMass + contact.bodyB->invMass;
+		if (totalInverseMass == 0) continue; // Avoid division by zero if both bodies are static
+
+		// Calculate the impulse magnitude (J).
+		// The -(1 + restitution) factor accounts for the bounce.
+		// Dividing by totalInverseMass ensures correct impulse distribution.
+		float impulseMagnitude = -(1 + contact.restitution) * nv / totalInverseMass;
+
+		// Compute impulse vector: direction is the normal, magnitude is 'impulseMagnitude'
+		Vector2 impulse = Vector2Scale(contact.normal, impulseMagnitude);
+
+		// Apply impulses to both bodies
+		// bodyA receives the impulse in the direction of the normal
+		contact.bodyA->ApplyForce(impulse, Body::ForceMode::Impulse);
+		// bodyB receives an equal and opposite impulse
+		contact.bodyB->ApplyForce(Vector2Scale(impulse, -1.0f), Body::ForceMode::Impulse);
 	}
 }

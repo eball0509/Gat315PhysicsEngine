@@ -1,4 +1,4 @@
-#pragma once
+	#pragma once
 #include "../../build/external/raylib-master/src/raylib.h"
 #include "scene_camera.h"
 #include <string>

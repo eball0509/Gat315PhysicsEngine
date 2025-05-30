@@ -1,13 +1,16 @@
-#include "Body.h"
+#include "body.h"
+#include "world.h"
 #include "Integrator.h"
 #include "../../build/external/raylib-master/src/raymath.h"
-#include "World.h"
 
 void Body::Step(float dt)
 {
 	if (type != Type::Dynamic) return;
+
+	// apply gravity
 	force += (World::gravity * gravityScale) * mass;
-	acceleration = force * inverseMass;
+	// compute acceleration
+	acceleration = (force * invMass);
 
 	SemiImplicitIntegrator(*this, dt);
 }
@@ -17,8 +20,20 @@ void Body::Draw(const Scene& scene)
 	scene.DrawCircle(position, size, color);
 }
 
-void Body::ApplyForce(const Vector2& force)
+void Body::ApplyForce(const Vector2& force, ForceMode forceMode)
 {
-	this->force += force;
-
+	switch (forceMode)
+	{
+	case Body::ForceMode::Force:
+		this->force += force;
+		break;
+	case Body::ForceMode::Impulse:
+		this->velocity += force * invMass;
+		break;
+	case Body::ForceMode::Velocity:
+		this->velocity += force;
+		break;
+	default:
+		break;
+	}
 }
