@@ -23,6 +23,20 @@ void SpringScene::Update()
 
 	float dt = GetFrameTime();
 
+	if (GUI::resetSimulation)
+	{
+
+		if (m_world)
+		{
+			m_world->DestroyAll();
+		}
+
+		m_selected = nullptr;
+		m_connect = nullptr;
+		
+		GUI::resetSimulation = false;
+	}
+
 	if (!GUI::mouseOverGUI)
 	{
 		if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))

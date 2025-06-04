@@ -85,4 +85,12 @@ void World::DestroyAll()
 		delete body;
 	}
 	m_bodies.clear();
+
+	for (auto spring : m_springs)
+	{
+		delete spring;
+	}
+	m_springs.clear();
+
+	m_contacts.clear();
 }

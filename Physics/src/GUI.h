@@ -35,5 +35,5 @@ public:
 
     inline static  float gravityValue = 0.0f;
     inline static  bool simulateActive = true;
-    //----------------------------------------------------------------------------------
+    inline static bool resetSimulation = false;
 };
